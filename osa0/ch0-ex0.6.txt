@@ -1,0 +1,17 @@
+title Uusi muistiinpano - SPA
+
+note over selain:
+selain  lisää uuden muistinpanon notes-listaan
+end note
+note over selain:
+selain piirtää sivun sisällön uudestaan, jolloin uusi muistiinpano
+ilmestyy sivun loppuun 
+end note
+note over selain:
+selain lähettää uuden muistinpanon selaimelle
+tallennettavaksi
+end note
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note over palvelin:
+palvelin lisää uuden muistiinpanon vanhojen jatkeeksi
+end note
