@@ -1,4 +1,3 @@
 # fullstack
 
-This is my repository for uploading solutions to exercises in the course Fullstack Open
-organized by University of Helsinki in fall 2022. https://fullstackopen.com/
+This is my repository for uploading solutions to exercises in the course Full Stack open 2022 at University of Helsinki. https://fullstackopen.com/
