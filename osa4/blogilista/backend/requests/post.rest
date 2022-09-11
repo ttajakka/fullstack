@@ -1,9 +1,9 @@
-POST HTTP://localhost:3003/api/blogs
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Ploki",
-  "author": "Soini",
-  "url": "www.timo.fi",
-  "likes": 2
+  "title": "Pokemonit",
+  "author": "Kusti",
+  "url": "www.pokedex.fi",
+  "likes": 90
 }
