@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Pokemonit",
-  "author": "Kusti",
-  "url": "www.pokedex.fi",
-  "likes": 90
+  "title": "Anime",
+  "author": "Nick Kuhn",
+  "url": "www.weeaboo.de`",
+  "likes": 200
 }
