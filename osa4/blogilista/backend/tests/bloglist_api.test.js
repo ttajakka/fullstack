@@ -4,6 +4,7 @@ const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 
 beforeEach(async () => {
@@ -12,6 +13,18 @@ beforeEach(async () => {
   await blogObject.save()
   blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
+
+  await User.deleteMany({})
+
+  const newUser = {
+    username: 'testuser',
+    name: 'Test User',
+    password: 'password',
+  }
+
+  await api
+    .post('/api/users')
+    .send(newUser)
 })
 
 test('blogs are returned as json', async () => {
@@ -39,16 +52,26 @@ test('first blog has field called id', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
-test('a valid blog can be added', async () => {
+test('a valid blog can be added using a valid token', async () => {
+  const login = await api
+    .post('/api/login')
+    .send({
+      username: 'testuser',
+      password: 'password'
+    })
+
+  const token = login.body.token
+
   const newBlog = {
-    title: 'Pokemonit',
-    author: 'Kusti',
-    url: 'www.pokedex.org',
-    likes: 69,
+    title: 'Testblog',
+    author: 'Test Author',
+    url: 'www.testblog.org',
+    likes: 123,
   }
 
   await api
     .post('/api/blogs')
+    .set({ 'Authorization': 'bearer ' + token })
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -58,32 +81,69 @@ test('a valid blog can be added', async () => {
   const titles = blogsAtEnd.map(r => r.title)
 
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-  expect(titles).toContain('Pokemonit')
+  expect(titles).toContain('Testblog')
+})
+
+test('a blog cannot be added if request contains no token', async () => {
+  const newBlog = {
+    title: 'Testblog',
+    author: 'Test Author',
+    url: 'www.testblog.org',
+    likes: 123,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
 test('if likes is not given, it is set to 0', async () => {
+  const login = await api
+    .post('/api/login')
+    .send({
+      username: 'testuser',
+      password: 'password'
+    })
+
+  const token = login.body.token
+
   const newBlog = {
-    title: 'Pokemonit',
-    author: 'Kusti',
-    url: 'www.pokedex.org',
+    title: 'Testblog',
+    author: 'Test User',
+    url: 'www.testblog.org',
   }
 
   const postedBlog = await api
     .post('/api/blogs')
+    .set({ 'Authorization': 'bearer ' + token })
     .send(newBlog)
 
   expect(postedBlog.body.likes).toBe(0)
 })
 
 test('blog without title is not added', async () => {
+  const login = await api
+    .post('/api/login')
+    .send({
+      username: 'testuser',
+      password: 'password'
+    })
+
+  const token = login.body.token
+
   const newBlog = {
-    author: 'Kusti',
-    url: 'www.pokedex.org',
-    likes: 69,
+    author: 'Test Author',
+    url: 'www.testblog.org',
+    likes: 123,
   }
 
   await api
     .post('/api/blogs')
+    .set({ 'Authorization': 'bearer ' + token })
     .send(newBlog)
     .expect(400)
 
@@ -92,14 +152,24 @@ test('blog without title is not added', async () => {
 })
 
 test('blog without url is not added', async () => {
+  const login = await api
+    .post('/api/login')
+    .send({
+      username: 'testuser',
+      password: 'password'
+    })
+
+  const token = login.body.token
+
   const newBlog = {
-    title: 'Pokemonit',
-    author: 'Kusti',
-    likes: 69,
+    title: 'Testblog',
+    author: 'Test Author',
+    likes: 123,
   }
 
   await api
     .post('/api/blogs')
+    .set({ 'Authorization': 'bearer ' + token })
     .send(newBlog)
     .expect(400)
 
@@ -110,29 +180,61 @@ test('blog without url is not added', async () => {
 describe('deletion of a note', () => {
 
   test('succeeds with status code 204 if id is valid', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+    const login = await api
+      .post('/api/login')
+      .send({
+        username: 'testuser',
+        password: 'password'
+      })
+
+    const token = login.body.token
+
+    const newBlog = {
+      title: 'Testblog',
+      author: 'Test Author',
+      url: 'www.testblog.org',
+      likes: 123,
+    }
+
+    const blogToDelete = await api
+      .post('/api/blogs')
+      .set({ 'Authorization': 'bearer ' + token })
+      .send(newBlog)
+
+
+    const blogsAfterAddition = await helper.blogsInDb()
+
+    expect(blogsAfterAddition).toHaveLength(
+      helper.initialBlogs.length + 1
+    )
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete(`/api/blogs/${blogToDelete.body.id}`)
+      .set({ 'Authorization': 'bearer ' + token })
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
     expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
+      helper.initialBlogs.length
     )
-
-    const titles = blogsAtEnd.map(r => r.title)
-
-    expect(titles).not.toContain(blogToDelete.title)
   })
 
   test('fails with status code 400 if id is invalid', async () => {
+    const login = await api
+      .post('/api/login')
+      .send({
+        username: 'testuser',
+        password: 'password'
+      })
+
+    const token = login.body.token
+
     const invalidId = '5a3d5da59070081a82a3445'
 
     await api
       .delete(`/api/blogs/${invalidId}`)
+      .set({ 'Authorization': 'bearer ' + token })
       .expect(400)
   })
 })
@@ -143,10 +245,10 @@ describe('updating a test', () => {
     const blogToChange = blogsAtStart[blogsAtStart.length-1]
 
     const updatedBlog = {
-      title: 'Chess Openings',
-      author: 'Sensei Danya',
-      url: 'google.enpassant.org',
-      likes: 2700
+      title: 'Test blog 2',
+      author: 'Second User',
+      url: 'test.url.org',
+      likes: 321
     }
 
     await api

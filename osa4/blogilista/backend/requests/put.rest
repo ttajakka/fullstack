@@ -1,9 +1,0 @@
-PUT HTTP://localhost:3003/api/blogs/631dfbe7f70b6a19ae384af7
-Content-Type: application/json
-
-{
-  "title": "Chess speaks for itself",
-  "author": "Hans Niemann",
-  "url": "saintlouischessclub.com",
-  "likes": 7
-}

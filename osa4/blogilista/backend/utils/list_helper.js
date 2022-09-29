@@ -36,7 +36,6 @@ const mostLikes = (blogs) => {
   if (blogs.length === 0) { return undefined }
 
   const authors = lodash.uniq(blogs.map(blog => blog.author))
-  //console.log(authors)
 
   const totalLikes = authors.map(author =>
     blogs.reduce((likes, blog) => {
@@ -45,7 +44,7 @@ const mostLikes = (blogs) => {
         : likes
     }, 0)
   )
-  //console.log(totalLikes)
+
   const max = Math.max(...totalLikes)
   return {
     author: authors[totalLikes.indexOf(max)],
