@@ -1,9 +1,22 @@
 import { useState } from 'react'
 
-const BlogForm = ({ addBlog }) => {
+const BlogForm = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    createBlog({
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl
+    })
+
+    setNewTitle('')
+    setNewAuthor('')
+    setNewUrl('')
+  }
 
   return (
     <div>
@@ -36,10 +49,9 @@ const BlogForm = ({ addBlog }) => {
             onChange={({ target }) => setNewUrl(target.value)}
           />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
-
   )
 }
 
