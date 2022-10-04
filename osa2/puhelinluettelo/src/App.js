@@ -143,7 +143,7 @@ const App = () => {
           setSuccMes(`Added ${returnedPerson.name}`)
           setTimeout(() => {
             setSuccMes(null)
-        }, 5000)
+          }, 5000)
         })
     }
   }
