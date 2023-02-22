@@ -1,52 +1,43 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const Blog = ({ blog, updateBlog, removeBlog }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
+const Blog = ({ blog, like, canRemove, remove }) => {
+  const [visible, setVisible] = useState(false)
 
-  const [showShort, setShowShort] = useState(true)
-
-  const toggleShowShort = () => {
-    setShowShort(!showShort)
-  }
-
-  const showWhenShort = { display: showShort ? '' : 'none' }
-  const hideWhenShort = { display: showShort ? 'none' : '' }
-
-  const handleLike = async () => {
-    const updatedBlog = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.author,
-      likes: blog.likes + 1,
-      user: blog.user._id
-    }
-    updateBlog(blog.id, updatedBlog)
-  }
-
-  const handleRemove = () => {
-    removeBlog(blog)
+  const style = {
+    marginBottom: 2,
+    padding: 5,
+    borderStyle: 'solid'
   }
 
   return (
-    <div className='blog' style={blogStyle}>
-      <div className='titleAuthor'>{blog.title} {blog.author}
-        <button style={showWhenShort} onClick={toggleShowShort}>view</button>
-        <button style={hideWhenShort} onClick={toggleShowShort}>hide</button>
-      </div>
-      <div className='urlLikesUserRemove' style={hideWhenShort}>
-        <div>{blog.url}</div>
-        <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
-        <div>{blog.user.name}</div>
-        <button onClick={handleRemove}>remove</button>
-      </div>
+    <div style={style} className='blog'>
+      {blog.title} {blog.author}
+      <button onClick={() => setVisible(!visible)}>
+        {visible ? 'hide' : 'show'}
+      </button>
+      {visible&&
+        <div>
+          <div> <a href={blog.url}> {blog.url}</a> </div>
+          <div>likes {blog.likes} <button onClick={like}>like</button></div>
+          <div>{blog.user && blog.user.name}</div>
+          {canRemove&&<button onClick={remove}>delete</button>}
+        </div>
+      }
     </div>
   )
+}
+
+Blog.propTypes = {
+  like: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
+  canRemove: PropTypes.bool,
+  blog: PropTypes.shape({
+    title: PropTypes.string,
+    author: PropTypes.string,
+    url: PropTypes.string,
+    likes: PropTypes.number
+  })
 }
 
 export default Blog

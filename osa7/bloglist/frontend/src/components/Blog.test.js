@@ -2,66 +2,61 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import Blog from './Blog'
 
-describe('<Blog />', () => {
+describe('Blog', () => {
+  const blog = {
+    title: 'Goto considered harmful',
+    author: 'Edsger Dijkstra',
+    url: 'google.com',
+    likes: 1
+  }
 
-  test('initially renders title and author but not likes or url', () => {
-    const blog = {
-      title: 'test title',
-      author: 'test author',
-      likes: '123',
-      url: 'test.url.org',
-      user: { id: '1234abcd', name: 'test user' }
-    }
+  const likeHandler = jest.fn()
 
-    const container = render(<Blog blog={blog} />).container
-
-    //const titleAuthorElement = screen.getByText('test title test author')
-    const titleAuthorElement = container.querySelector('.titleAuthor')
-    expect(titleAuthorElement).toBeDefined()
-
-    const hiddenElement = container.querySelector('.urlLikesUserRemove')
-    expect(hiddenElement).toHaveStyle('display: none')
+  beforeEach(() => {
+    render(
+      <Blog
+        blog={blog}
+        remove={jest.fn()}
+        canRemove={true}
+        like={likeHandler}
+      />
+    )
   })
 
-  test('renders url and likes when button is clicked', async () => {
-    const blog = {
-      title: 'test title',
-      author: 'test author',
-      likes: '123',
-      url: 'test.url.org',
-      user: { id: '1234abcd', name: 'test user' }
-    }
+  test('renders only title and author by default', () => {
+    screen.getByText(blog.title, { exact: false })
+    screen.getByText(blog.author, { exact: false })
 
-    const container = render(<Blog blog={blog} />).container
+    const ulrElement = screen.queryByText(blog.url, { exact: false })
+    expect(ulrElement).toBeNull()
 
-    const user = userEvent.setup()
-    const viewButton = screen.getByText('view')
-    await user.click(viewButton)
-
-    const hiddenElement = container.querySelector('.urlLikesUserRemove')
-    expect(hiddenElement).not.toHaveStyle('display: none')
+    const likesElement = screen.queryByText('likes', { exact: false })
+    expect(likesElement).toBeNull()
   })
 
-  test('pressing like button calls handler function', async () => {
-    const blog = {
-      title: 'test title',
-      author: 'test author',
-      likes: '123',
-      url: 'test.url.org',
-      user: { id: '1234abcd', name: 'test user' }
-    }
-
-    const mockHandler = jest.fn()
-
-    render(<Blog blog={blog} updateBlog={mockHandler} />).container
-
+  test('renders also details when asked to be shown', async () => {
     const user = userEvent.setup()
-    const likesButton = screen.getByText('like')
-    await user.click(likesButton)
-    await user.click(likesButton)
+    const button = screen.getByText('show')
+    await user.click(button)
 
-    expect(mockHandler.mock.calls).toHaveLength(2)
+    screen.getByText(blog.url, { exact: false })
+    screen.getByText(`likes ${blog.likes}`, { exact: false })
+  })
+
+  test('if liked twice, ', async () => {
+    const user = userEvent.setup()
+
+    const showButton = screen.getByText('show')
+    await user.click(showButton)
+
+    const likeButton = screen.getByText('like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(likeHandler.mock.calls).toHaveLength(2)
   })
 })
+

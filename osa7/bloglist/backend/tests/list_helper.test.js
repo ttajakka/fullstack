@@ -7,8 +7,8 @@ const listWithOneBlog = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
-    __v: 0
-  }
+    __v: 0,
+  },
 ]
 
 const listWithManyBlogs = [
@@ -18,7 +18,7 @@ const listWithManyBlogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422aa71b54a676234d17f8',
@@ -26,7 +26,7 @@ const listWithManyBlogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422b3a1b54a676234d17f9',
@@ -34,7 +34,7 @@ const listWithManyBlogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
     likes: 12,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422b891b54a676234d17fa',
@@ -42,7 +42,7 @@ const listWithManyBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
     likes: 10,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422ba71b54a676234d17fb',
@@ -50,7 +50,7 @@ const listWithManyBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
     likes: 0,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422bc61b54a676234d17fc',
@@ -58,8 +58,8 @@ const listWithManyBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
     likes: 2,
-    __v: 0
-  }
+    __v: 0,
+  },
 ]
 
 test('dummy returns one', () => {
@@ -70,7 +70,6 @@ test('dummy returns one', () => {
 })
 
 describe('total likes', () => {
-
   test('of empty list is zero', () => {
     const result = listHelper.totalLikes([])
     expect(result).toBe(0)
@@ -88,7 +87,6 @@ describe('total likes', () => {
 })
 
 describe('favorite blog', () => {
-
   test('of an empty list is undefined', () => {
     expect(listHelper.favoriteBlog([])).toEqual(undefined)
   })
@@ -108,7 +106,7 @@ describe('favorite blog', () => {
     const answer = {
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
-      likes: 12
+      likes: 12,
     }
     expect(result).toEqual(answer)
   })
@@ -121,7 +119,7 @@ describe('favorite blog', () => {
         author: 'Edsger W. Dijkstra',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 5,
-        __v: 0
+        __v: 0,
       },
       {
         _id: '5a422aa71b54a676234d1711',
@@ -129,14 +127,14 @@ describe('favorite blog', () => {
         author: 'E. Dijkstra',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 5,
-        __v: 0
-      }
+        __v: 0,
+      },
     ]
 
     const answer = {
       title: 'Go To Statement Considered Harmful',
       author: 'Edsger W. Dijkstra',
-      likes: 5
+      likes: 5,
     }
 
     const result = listHelper.favoriteBlog(twoMaxes)
@@ -144,58 +142,52 @@ describe('favorite blog', () => {
   })
 
   describe('most blogs', () => {
-
     test('is undefined if blog list is empty', () => {
       expect(listHelper.mostBlogs([])).toEqual(undefined)
     })
 
     test('returns the only author when list has only one blog', () => {
-
       const result = listHelper.mostBlogs(listWithOneBlog)
 
       const answer = {
         author: 'Edsger W. Dijkstra',
-        blogs: 1
+        blogs: 1,
       }
       expect(result).toEqual(answer)
     })
 
     test('returns correct author for bigger list', () => {
-
       const result = listHelper.mostBlogs(listWithManyBlogs)
 
       const answer = {
         author: 'Robert C. Martin',
-        blogs: 3
+        blogs: 3,
       }
       expect(result).toEqual(answer)
     })
   })
 
   describe('most likes', () => {
-
-    test.only('is undefined if blog list is empty', () => {
+    test('is undefined if blog list is empty', () => {
       expect(listHelper.mostLikes([])).toEqual(undefined)
     })
 
-    test.only('returns the only author when list has only one blog', () => {
-
+    test('returns the only author when list has only one blog', () => {
       const result = listHelper.mostLikes(listWithOneBlog)
 
       const answer = {
         author: 'Edsger W. Dijkstra',
-        likes: 5
+        likes: 5,
       }
       expect(result).toEqual(answer)
     })
 
-    test.only('returns correct author and likes for bigger list', () => {
-
+    test('returns correct author and likes for bigger list', () => {
       const result = listHelper.mostLikes(listWithManyBlogs)
 
       const answer = {
         author: 'Edsger W. Dijkstra',
-        likes: 17
+        likes: 17,
       }
       expect(result).toEqual(answer)
     })

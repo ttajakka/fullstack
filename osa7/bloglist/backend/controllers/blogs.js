@@ -1,18 +1,15 @@
 const router = require('express').Router()
-//const jwt = require('jsonwebtoken')
-
-//const userExtractor = require('../utils/middleware').userExtractor
 const Blog = require('../models/blog')
-//const User = require('../models/user')
+
+const { userExtractor } = require('../utils/middleware')
 
 router.get('/', async (request, response) => {
-  const blogs = await Blog
-    .find({})
-    .populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+
   response.json(blogs)
 })
 
-router.post('/', async (request, response) => {
+router.post('/', userExtractor, async (request, response) => {
   const user = request.user
 
   if (!user) {
@@ -21,21 +18,25 @@ router.post('/', async (request, response) => {
 
   const blog = new Blog({ ...request.body, user: user._id })
 
-  if(!request.body.likes) {
+  if (!request.body.likes) {
     blog.likes = 0
   }
 
-  const savedBlog = await blog.save()
+  let savedBlog = await blog.save()
 
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
+  savedBlog = await Blog.findById(savedBlog._id).populate('user')
+
   response.status(201).json(savedBlog)
 })
 
-router.delete('/:id', async (request, response) => {
+router.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
+
   const blog = await Blog.findById(request.params.id)
+
   if (!blog) {
     return response.status(204).end()
   }
@@ -48,6 +49,9 @@ router.delete('/:id', async (request, response) => {
     return response.status(401).json({ error: 'unauthorized deletion' })
   }
 
+  user.blogs = user.blogs.filter((b) => b.toString() !== blog.id.toString())
+  await user.save()
+
   await Blog.findByIdAndRemove(request.params.id)
 
   response.status(204).end()
@@ -56,11 +60,14 @@ router.delete('/:id', async (request, response) => {
 router.put('/:id', async (request, response) => {
   const blog = request.body
 
-  const updatedBlog = await Blog
-    .findByIdAndUpdate(
-      request.params.id,
-      blog,
-      { new: true, runValidators: true, context: 'query' })
+  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  })
+
+  updatedBlog = await Blog.findById(updatedBlog._id).populate('user')
+
   response.status(200).json(updatedBlog)
 })
 

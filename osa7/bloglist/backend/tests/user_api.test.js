@@ -53,7 +53,7 @@ describe('when there is initially one user at db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('Username must be unique.')
+    expect(result.body.error).toContain('expected `username` to be unique.')
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
@@ -63,13 +63,10 @@ describe('when there is initially one user at db', () => {
 
     const newUser = {
       name: 'badUser',
-      password: 'weakPassword'
+      password: 'weakPassword',
     }
 
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
+    const result = await api.post('/api/users').send(newUser).expect(400)
 
     expect(result.body.error).toContain('Path `username` is required.')
     const usersAtEnd = await helper.usersInDb()
@@ -81,15 +78,14 @@ describe('when there is initially one user at db', () => {
 
     const newUser = {
       username: 'lameUser',
-      name: 'badUser'
+      name: 'badUser',
     }
 
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
+    const result = await api.post('/api/users').send(newUser).expect(400)
 
-    expect(result.body.error).toContain('invalid password')
+    expect(result.body.error).toContain(
+      '`password` is shorter than the minimum allowed length (3)'
+    )
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
@@ -100,15 +96,14 @@ describe('when there is initially one user at db', () => {
     const newUser = {
       username: 'u',
       name: 'badUser',
-      password: 'pass'
+      password: 'pass',
     }
 
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
+    const result = await api.post('/api/users').send(newUser).expect(400)
 
-    expect(result.body.error).toContain('is shorter than the minimum allowed length (3).')
+    expect(result.body.error).toContain(
+      'is shorter than the minimum allowed length (3).'
+    )
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
@@ -119,15 +114,14 @@ describe('when there is initially one user at db', () => {
     const newUser = {
       username: 'lameUser',
       name: 'badUser',
-      password: 'jk'
+      password: 'jk',
     }
 
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
+    const result = await api.post('/api/users').send(newUser).expect(400)
 
-    expect(result.body.error).toContain('invalid password')
+    expect(result.body.error).toContain(
+      '`password` is shorter than the minimum allowed length (3)'
+    )
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
