@@ -4,6 +4,9 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import storageService from './services/storage'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { setInfo } from './reducers/infoReducer'
+
 import LoginForm from './components/Login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
@@ -12,7 +15,10 @@ import Togglable from './components/Togglable'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState('')
-  const [info, setInfo] = useState({ message: null })
+  //const [info, setInfo] = useState({ message: null })
+
+  const dispatch = useDispatch()
+  const info = useSelector(state => state.info)
 
   const blogFormRef = useRef()
 
@@ -26,13 +32,13 @@ const App = () => {
   }, [])
 
   const notifyWith = (message, type = 'info') => {
-    setInfo({
+    dispatch(setInfo({
       message,
       type,
-    })
+    }))
 
     setTimeout(() => {
-      setInfo({ message: null })
+      dispatch(setInfo({ message: null }))
     }, 3000)
   }
 

@@ -5,9 +5,12 @@ const Blog = ({ blog, like, canRemove, remove }) => {
   const [visible, setVisible] = useState(false)
 
   const style = {
+    marginTop: 5,
     marginBottom: 2,
     padding: 5,
-    borderStyle: 'solid'
+    borderStyle: 'solid',
+    borderRadius: 7,
+    borderWidth: 1
   }
 
   return (

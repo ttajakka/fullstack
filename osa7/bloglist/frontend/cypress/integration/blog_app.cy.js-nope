@@ -29,8 +29,8 @@ describe('Blog app', function () {
       cy.get('#password').type('wrongpassword')
       cy.get('#login-button').click()
 
-      cy.contains('Wrong username or password')
-      cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
+      cy.contains('wrong username or password')
+      cy.get('#info').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
 
@@ -39,8 +39,8 @@ describe('Blog app', function () {
       cy.login({ username: 'testuser', password: 'testpassword' })
     })
 
-    it('a blog can be created', function () {
-      cy.contains('create new').click()
+    it.only('a blog can be created', function () {
+      cy.contains('new note').click()
       cy.get('#new-title-input').type('Test title')
       cy.get('#new-author-input').type('Test author')
       cy.get('#new-url-input').type('test.url.org')
@@ -121,7 +121,7 @@ describe('Blog app', function () {
         cy.get('.blog').eq(3).should('contain', 'Second title')
       })
 
-      it.only('adding likes reorders the blogs correctly', function () {
+      it('adding likes reorders the blogs correctly', function () {
         cy.get('.blog').eq(1).contains('view').click()
         cy.wait(200)
         cy.get('.blog').eq(1).contains('like').click()

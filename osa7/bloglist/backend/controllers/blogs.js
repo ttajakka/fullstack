@@ -44,7 +44,7 @@ router.delete('/:id', userExtractor, async (request, response) => {
   if (!user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-
+  
   if (blog.user && blog.user.toString() !== user.id) {
     return response.status(401).json({ error: 'unauthorized deletion' })
   }

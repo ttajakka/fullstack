@@ -1,13 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-//import { Provider } from 'react-redux'
-//import { configureStore } from '@reduxjs/toolkit'
+import { Provider } from 'react-redux'
+import { configureStore } from '@reduxjs/toolkit'
 import App from './App'
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+import infoReducer from './reducers/infoReducer'
+
+const store = configureStore({
+  reducer: {
+    info: infoReducer
+  }
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  //<Provider>
+  <Provider store={store}>
     <App />
-  //</Provider>
+  </Provider>
 )
