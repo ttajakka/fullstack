@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import userService from '../services/users'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeUserlist } from '../reducers/userlistReducer'
 
 const Userlist = () => {
-  const [users, setUsers] = useState([])
+  const userlist = useSelector(state => state.userlist)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    userService.getAll().then(users => setUsers(users))
+    dispatch(initializeUserlist())
   }, [])
 
   return (
@@ -19,9 +21,9 @@ const Userlist = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map(u => (
+          {userlist.map(u => (
             <tr key={u.id}>
-              <td>{u.name}</td>
+              <td><a>{u.name}</a></td>
               <td>{u.blogs.length}</td>
             </tr>
           ))}

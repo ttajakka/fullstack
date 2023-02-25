@@ -7,12 +7,14 @@ import App from './App'
 import infoReducer from './reducers/infoReducer'
 import blogsReducer from './reducers/blogsReducer'
 import userReducer from './reducers/userReducer'
+import userlistReducer from './reducers/userlistReducer'
 
 const store = configureStore({
   reducer: {
     info: infoReducer,
     blogs: blogsReducer,
-    user: userReducer
+    user: userReducer,
+    userlist: userlistReducer
   }
 })
 
