@@ -5,10 +5,12 @@ import { configureStore } from '@reduxjs/toolkit'
 import App from './App'
 
 import infoReducer from './reducers/infoReducer'
+import blogsReducer from './reducers/blogsReducer'
 
 const store = configureStore({
   reducer: {
-    info: infoReducer
+    info: infoReducer,
+    blogs: blogsReducer
   }
 })
 

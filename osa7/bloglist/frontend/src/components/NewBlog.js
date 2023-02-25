@@ -1,13 +1,34 @@
 import { useState } from 'react'
+import { useDispatch  } from 'react-redux'
+//import blogService from '../services/blogs'
+import { addBlog } from '../reducers/blogsReducer'
+//import { setInfo } from '../reducers/infoReducer'
+import { notifyWith } from '../reducers/infoReducer'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ hide }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const dispatch = useDispatch()
+
   const handleSubmit = async (event) => {
+    //const newBlog = await blogService.create({ title, author, url })
+    //dispatch(addBlog(newBlog))
+
+    // dispatch(setInfo(`A new blog '${newBlog.title}' by '${newBlog.author}' added`))
+    // setTimeout(() => {
+    //   dispatch(setInfo({ message: null }))
+    // }, 3000)
+
     event.preventDefault()
-    await createBlog({ title, author, url })
+    dispatch(addBlog({ title, author, url }))
+    dispatch(notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`))
+    
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    hide()
   }
 
   return (
