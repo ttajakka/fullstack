@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+//import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storageService from './services/storage'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setInfo, notifyWith } from './reducers/infoReducer'
+//import { setInfo, notifyWith } from './reducers/infoReducer'
+import { notifyWith } from './reducers/infoReducer'
 import { initializeBlogs, setBlogs } from './reducers/blogsReducer'
 
 import LoginForm from './components/Login'
@@ -79,16 +80,16 @@ const App = () => {
     setBlogs(blogs.map(b => (b.id === blog.id ? updatedBlog : b)))
   }
 
-  const remove = async blog => {
-    const ok = window.confirm(
-      `Sure you want to remove '${blog.title}' by ${blog.author}`
-    )
-    if (ok) {
-      await blogService.remove(blog.id)
-      dispatch(notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`))
-      setBlogs(blogs.filter(b => b.id !== blog.id))
-    }
-  }
+  // const remove = async blog => {
+  //   const ok = window.confirm(
+  //     `Sure you want to remove '${blog.title}' by ${blog.author}`
+  //   )
+  //   if (ok) {
+  //     await blogService.remove(blog.id)
+  //     dispatch(notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`))
+  //     setBlogs(blogs.filter(b => b.id !== blog.id))
+  //   }
+  // }
 
   if (!user) {
     return (
@@ -114,10 +115,28 @@ const App = () => {
       <Bloglist
         user={user}
         like={like}
-        remove={remove}
       />
     </div>
   )
+
+  // return (
+  //   <div>
+  //     <h2>blogs</h2>
+  //     <Notification />
+  //     <div>
+  //       {user.name} logged in
+  //       <button onClick={logout}>logout</button>
+  //     </div>
+  //     <Togglable buttonLabel="new note" ref={blogFormRef}>
+  //       <NewBlog hide={() => blogFormRef.current.toggleVisibility()} />
+  //     </Togglable>
+  //     <Bloglist
+  //       user={user}
+  //       like={like}
+  //       remove={remove}
+  //     />
+  //   </div>
+  // )
 }
 
 export default App

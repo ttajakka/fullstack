@@ -23,7 +23,7 @@ const BlogForm = ({ hide }) => {
 
     event.preventDefault()
     dispatch(addBlog({ title, author, url }))
-    dispatch(notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`))
+    //dispatch(notifyWith(`A new blog '${title}' by '${author}' added`))
     
     setTitle('')
     setAuthor('')
