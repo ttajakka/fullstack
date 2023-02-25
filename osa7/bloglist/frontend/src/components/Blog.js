@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { removeBlog } from '../reducers/blogsReducer'
+import { likeBlog, removeBlog } from '../reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
-//const Blog = ({ blog, like, canRemove, remove }) => {
-const Blog = ({ blog, like, canRemove }) => {
+const Blog = ({ blog, canRemove }) => {
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
 
@@ -14,37 +13,45 @@ const Blog = ({ blog, like, canRemove }) => {
     padding: 5,
     borderStyle: 'solid',
     borderRadius: 7,
-    borderWidth: 1
+    borderWidth: 1,
   }
 
   return (
-    <div style={style} className='blog'>
+    <div style={style} className="blog">
       {blog.title} {blog.author}
       <button onClick={() => setVisible(!visible)}>
         {visible ? 'hide' : 'show'}
       </button>
-      {visible&&
+      {visible && (
         <div>
-          <div> <a href={blog.url}> {blog.url}</a> </div>
-          <div>likes {blog.likes} <button onClick={like}>like</button></div>
+          <div>
+            {' '}
+            <a href={blog.url}> {blog.url}</a>{' '}
+          </div>
+          <div>
+            likes {blog.likes}{' '}
+            <button onClick={() => dispatch(likeBlog(blog))}>like</button>
+          </div>
           <div>{blog.user && blog.user.name}</div>
-          {canRemove&&<button onClick={() => dispatch(removeBlog(blog))}>delete</button>}
+          {canRemove && (
+            <button onClick={() => dispatch(removeBlog(blog))}>delete</button>
+          )}
         </div>
-      }
+      )}
     </div>
   )
 }
 
+//() => dispatch(likeBlog(blog))
+
 Blog.propTypes = {
-  like: PropTypes.func.isRequired,
-  //remove: PropTypes.func.isRequired,
   canRemove: PropTypes.bool,
   blog: PropTypes.shape({
     title: PropTypes.string,
     author: PropTypes.string,
     url: PropTypes.string,
-    likes: PropTypes.number
-  })
+    likes: PropTypes.number,
+  }),
 }
 
 export default Blog
