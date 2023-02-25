@@ -1,6 +1,6 @@
 const KEY = 'bloggappUser'
 
-const saveUser = (user) => {
+const saveUser = user => {
   localStorage.setItem(KEY, JSON.stringify(user))
 }
 
@@ -13,5 +13,7 @@ const removeUser = () => {
 }
 
 export default {
-  saveUser, loadUser, removeUser
+  saveUser,
+  loadUser,
+  removeUser,
 }
