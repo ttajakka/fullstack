@@ -6,23 +6,25 @@ import { initializeBlogs } from './reducers/blogsReducer'
 import { initializeUser, logout } from './reducers/userReducer'
 
 import LoginForm from './components/Login'
+import LoggedUser from './components/LoggedUser'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Bloglist from './components/Bloglist'
 import Userlist from './components/Userlist'
+import User from './components/User'
 
-const LoggedUser = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+// const LoggedUser = () => {
+//   const dispatch = useDispatch()
+//   const user = useSelector(state => state.user)
 
-  return (
-    <div>
-      {user.name} logged in
-      <button onClick={() => dispatch(logout())}>logout</button>
-    </div>
-  )
-}
+//   return (
+//     <div>
+//       <p>{user.name} logged in</p>
+//       <button onClick={() => dispatch(logout())}>logout</button>
+//     </div>
+//   )
+// }
 
 const Home = () => {
   const blogFormRef = useRef()
@@ -67,6 +69,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Userlist />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </Router>
   )

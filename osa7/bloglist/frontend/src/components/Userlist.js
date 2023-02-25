@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeUserlist } from '../reducers/userlistReducer'
+import { Link } from 'react-router-dom'
 
 const Userlist = () => {
   const userlist = useSelector(state => state.userlist)
@@ -23,7 +24,9 @@ const Userlist = () => {
         <tbody>
           {userlist.map(u => (
             <tr key={u.id}>
-              <td><a>{u.name}</a></td>
+              <td>
+                <Link to={`/users/${u.id}`}>{u.name}</Link>
+              </td>
               <td>{u.blogs.length}</td>
             </tr>
           ))}
