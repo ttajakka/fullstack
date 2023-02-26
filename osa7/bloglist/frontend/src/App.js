@@ -11,8 +11,10 @@ import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Bloglist from './components/Bloglist'
+import Blog2 from './components/Blog2'
 import Userlist from './components/Userlist'
 import User from './components/User'
+import { initializeUserlist } from './reducers/userlistReducer'
 
 // const LoggedUser = () => {
 //   const dispatch = useDispatch()
@@ -37,6 +39,7 @@ const Home = () => {
       <Bloglist />
     </div>
   )
+  //() => dispatch(likeBlog(blog))
 }
 
 const App = () => {
@@ -48,6 +51,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
+    dispatch(initializeUserlist())
   }, [dispatch])
 
   if (!user) {
@@ -70,6 +74,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Userlist />} />
         <Route path="/users/:id" element={<User />} />
+        <Route path="/blogs/:id" element={<Blog2 />} />
       </Routes>
     </Router>
   )

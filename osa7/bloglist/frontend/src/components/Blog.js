@@ -18,7 +18,7 @@ const Blog = ({ blog, canRemove }) => {
 
   return (
     <div style={style} className="blog">
-      {blog.title} {blog.author}
+      {blog.title} {blog.author} {' '}
       <button onClick={() => setVisible(!visible)}>
         {visible ? 'hide' : 'show'}
       </button>
