@@ -10,6 +10,11 @@ const userlistSlice = createSlice({
     setUserlist(state, action) {
       return action.payload
     },
+
+    // updateUser(state, action) {
+    //   const id = action.payload.id
+    //   return state.map(b => (b.id !== id ? b : action.payload)).sort(byLikes)
+    // }
   },
 })
 

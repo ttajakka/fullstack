@@ -1,15 +1,8 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { initializeUserlist } from '../reducers/userlistReducer'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const Userlist = () => {
   const userlist = useSelector(state => state.userlist)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(initializeUserlist())
-  }, [])
 
   return (
     <div>

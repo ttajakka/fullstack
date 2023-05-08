@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
 import { notifyWith } from './infoReducer'
+import { initializeUserlist } from './userlistReducer'
 
 const initialState = []
 
@@ -45,6 +46,7 @@ export const addBlog = blog => {
       notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`)
     )
     dispatch(appendBlog(newBlog))
+    dispatch(initializeUserlist())
   }
 }
 
@@ -71,6 +73,7 @@ export const removeBlog = blog => {
         notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`)
       )
       dispatch(deleteBlog(blog))
+      dispatch(initializeUserlist())
     }
   }
 }

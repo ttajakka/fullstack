@@ -44,12 +44,12 @@ router.delete('/:id', userExtractor, async (request, response) => {
   if (!user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  
+
   if (blog.user && blog.user.toString() !== user.id) {
     return response.status(401).json({ error: 'unauthorized deletion' })
   }
 
-  user.blogs = user.blogs.filter((b) => b.toString() !== blog.id.toString())
+  user.blogs = user.blogs.filter(b => b.toString() !== blog.id.toString())
   await user.save()
 
   await Blog.findByIdAndRemove(request.params.id)
@@ -69,6 +69,10 @@ router.put('/:id', async (request, response) => {
   updatedBlog = await Blog.findById(updatedBlog._id).populate('user')
 
   response.status(200).json(updatedBlog)
+})
+
+router.post('/:id/comments', async (request, response) => {
+  
 })
 
 module.exports = router

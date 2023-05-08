@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
 import { initializeBlogs } from './reducers/blogsReducer'
-import { initializeUser, logout } from './reducers/userReducer'
+import { initializeUser } from './reducers/userReducer'
+import { initializeUserlist } from './reducers/userlistReducer'
 
 import LoginForm from './components/Login'
-import LoggedUser from './components/LoggedUser'
+import Menu from './components/Menu'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -14,45 +15,29 @@ import Bloglist from './components/Bloglist'
 import Blog2 from './components/Blog2'
 import Userlist from './components/Userlist'
 import User from './components/User'
-import { initializeUserlist } from './reducers/userlistReducer'
-
-// const LoggedUser = () => {
-//   const dispatch = useDispatch()
-//   const user = useSelector(state => state.user)
-
-//   return (
-//     <div>
-//       <p>{user.name} logged in</p>
-//       <button onClick={() => dispatch(logout())}>logout</button>
-//     </div>
-//   )
-// }
 
 const Home = () => {
   const blogFormRef = useRef()
 
   return (
     <div>
-      <Togglable buttonLabel="new note" ref={blogFormRef}>
+      <Togglable buttonLabel="create new" ref={blogFormRef}>
         <NewBlog hide={() => blogFormRef.current.toggleVisibility()} />
       </Togglable>
       <Bloglist />
     </div>
   )
-  //() => dispatch(likeBlog(blog))
 }
 
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
 
-  const blogFormRef = useRef()
-
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
     dispatch(initializeUserlist())
-  }, [dispatch])
+  }, [])
 
   if (!user) {
     return (
@@ -66,9 +51,9 @@ const App = () => {
 
   return (
     <Router>
+      <Menu user={user} />
       <h2>blogs</h2>
       <Notification />
-      <LoggedUser />
 
       <Routes>
         <Route path="/" element={<Home />} />
