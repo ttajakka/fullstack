@@ -17,7 +17,7 @@ const Menu = ({ user }) => {
   }
 
   return (
-    <div style={{ backgroundColor: 'lightgray'}}>
+    <div style={{ backgroundColor: 'lightgray', padding: 3 }}>
       <Link style={linkstyle} to="/">Blogs</Link>
       <Link style={linkstyle} to="/users">Users</Link>
       {user.name} logged in

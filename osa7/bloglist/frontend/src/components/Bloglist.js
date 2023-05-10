@@ -10,7 +10,7 @@ const Bloglist = () => {
     marginBottom: 2,
     padding: 5,
     borderStyle: 'solid',
-    borderRadius: 5,
+    borderRadius: 3,
     borderWidth: 1,
   }
 
