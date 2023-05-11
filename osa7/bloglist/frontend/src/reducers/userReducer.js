@@ -31,7 +31,7 @@ export const login = (username, password) => {
       storageService.saveUser(user)
       dispatch(notifyWith('welcome!'))
     } catch (e) {
-      dispatch(notifyWith('wrong username or password', 'error'))
+      dispatch(notifyWith('wrong username or password', 'danger'))
     }
   }
 }

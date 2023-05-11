@@ -19,7 +19,7 @@ let timetoutID = 0
 
 export const notifyWith = (
   message,
-  type = 'info',
+  type = 'success',
   time = DEFAULT_TIMEOUT_LENGTH
 ) => {
   return dispatch => {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { likeBlog, addComment, removeBlog } from '../reducers/blogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -39,14 +39,14 @@ const blog = () => {
   const canRemove = loggeduser.username === blog.user.username
   return (
     <div style={style} className="blog">
-      <h2>
-        {blog.title} {blog.author}
-      </h2>
+      <h2>{blog.title}</h2>
+      <h3>by {blog.author}</h3>
 
       <div>
         <div>
-          {' '}
-          <a href={blog.url}> {blog.url}</a>{' '}
+          <a href={blog.url}>
+            {blog.url}
+          </a>
         </div>
         <div>
           likes {blog.likes}{' '}

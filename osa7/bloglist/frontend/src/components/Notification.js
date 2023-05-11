@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux'
+import { Alert } from 'react-bootstrap'
 
 const Notification = () => {
-
   const info = useSelector(state => state.info)
 
   if (!info.message) {
     return
   }
 
-  const style = {
+  /*const style = {
     color: info.type === 'error' ? 'red' : 'green',
     background: 'lightgrey',
     fontSize: 20,
@@ -22,7 +22,11 @@ const Notification = () => {
     <div style={style} id="info">
       {info.message}
     </div>
-  )
+  )*/
+
+  // info.type has value "success" or "danger" as defined by Bootstrap
+
+  return <Alert variant={info.type}>{info.message}</Alert>
 }
 
 export default Notification

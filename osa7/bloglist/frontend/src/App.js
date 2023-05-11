@@ -21,6 +21,7 @@ const Home = () => {
 
   return (
     <div>
+      <h2>Blogs</h2>
       <Togglable buttonLabel="create new" ref={blogFormRef}>
         <NewBlog hide={() => blogFormRef.current.toggleVisibility()} />
       </Togglable>
@@ -41,27 +42,30 @@ const App = () => {
 
   if (!user) {
     return (
-      <div>
-        <h2>log in to application</h2>
-        <Notification />
-        <LoginForm />
+      <div className="container">
+        <div>
+          <h2>log in to application</h2>
+          <Notification />
+          <LoginForm />
+        </div>
       </div>
     )
   }
 
   return (
-    <Router>
-      <Menu user={user} />
-      <h2>blogs</h2>
-      <Notification />
+    <div className="container">
+      <Router>
+        <Menu user={user} />
+        <Notification />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<Userlist />} />
-        <Route path="/users/:id" element={<User />} />
-        <Route path="/blogs/:id" element={<Blog2 />} />
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<Userlist />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/blogs/:id/*" element={<Blog2 />} />
+        </Routes>
+      </Router>
+    </div>
   )
 }
 
