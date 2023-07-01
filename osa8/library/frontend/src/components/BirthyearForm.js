@@ -15,9 +15,9 @@ const BirthyearForm = ({ show, authors }) => {
 
   const submit = event => {
     event.preventDefault()
-    
+
     const name = selectedAuthor.value
-    changeYear({ variables: { name, year } })
+    changeYear({ variables: { name, year: parseInt(year) } })
 
     setYear('')
   }
@@ -40,7 +40,7 @@ const BirthyearForm = ({ show, authors }) => {
           <input
             type="number"
             value={year}
-            onChange={({ target }) => setYear(parseInt(target.value))}
+            onChange={({ target }) => setYear(target.value)}
           />
         </div>
         <button onClick={submit}>update author</button>
