@@ -6,7 +6,7 @@ const Books = ({ show }) => {
   const [genre, setGenre] = useState(null)
 
   const allBooks = useQuery(ALL_BOOKS)
-  const booksInGenre = useQuery(ALL_BOOKS) //, { variables: { genre } })
+  const booksInGenre = useQuery(ALL_BOOKS)
 
   if (!show) {
     return null
