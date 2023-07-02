@@ -15,7 +15,7 @@ export const updateCache = (cache, query, addedBook) => {
   const uniqByName = (a) => {
     let seen = new Set()
     return a.filter((item) => {
-      let k = item.name
+      let k = item.title
       return seen.has(k) ? false : seen.add(k)
     })
   }
@@ -50,7 +50,7 @@ const App = () => {
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded
-      setMessage(`Added book ${addedBook.title}`)
+      notify(`Added book ${addedBook.title}`)
 
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
     }
@@ -67,6 +67,13 @@ const App = () => {
 
   if (authors.loading || books.loading || user.loading) {
     return <div>loading...</div>
+  }
+
+  const notify = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   return (
