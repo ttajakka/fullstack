@@ -37,8 +37,7 @@ const resolvers = {
 
   Author: {
     bookCount: async root => {
-      const books = await Book.find({ author: root })
-      return books.length
+      return root.books.length
     },
   },
 
@@ -70,7 +69,10 @@ const resolvers = {
 
       const book = new Book({ ...args, author: author })
       try {
-        await book.save()
+        const savedBook = await book.save()
+        author = await Author.findOne({ name: args.author }) 
+        author.books = author.books.concat(savedBook._id)
+        await author.save()
       } catch (error) {
         throw new GraphQLError('Saving book failed', {
           extensions: {
