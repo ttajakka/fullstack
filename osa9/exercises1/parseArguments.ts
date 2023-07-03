@@ -1,6 +1,6 @@
 const parseArguments = (): number[] => {
   const len = process.argv.length;
-  if (len < 3) return null;
+  if (len < 3) return [];
 
   const args = [];
   let n = 0;

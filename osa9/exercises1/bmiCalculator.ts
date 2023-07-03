@@ -5,9 +5,9 @@ interface InputValues {
   weight: number;
 }
 
-const getHeightAndWeight = (): InputValues => {
+export const getHeightAndWeight = (): InputValues => {
   const args = parseArguments();
-  if (!args || args.length !== 2)
+  if (args.length !== 2)
     throw new Error("Must provide two arguments: height (cm) and weight (kg)");
 
   const height = args[0];
@@ -24,7 +24,7 @@ const getHeightAndWeight = (): InputValues => {
   };
 };
 
-const calculcateBmi = (height: number, weight: number): string => {
+export const calculcateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2;
   if (bmi < 18.5) {
     return "Underweight";
@@ -37,13 +37,13 @@ const calculcateBmi = (height: number, weight: number): string => {
   }
 };
 
-try {
-  const { height, weight } = getHeightAndWeight();
-  console.log(calculcateBmi(height, weight));
-} catch (error: unknown) {
-  let errorMessage = "Something went wrong.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
-  }
-  console.log(errorMessage);
-}
+// try {
+//   const { height, weight } = getHeightAndWeight();
+//   console.log(calculcateBmi(height, weight));
+// } catch (error: unknown) {
+//   let errorMessage = "Something went wrong.";
+//   if (error instanceof Error) {
+//     errorMessage += " Error: " + error.message;
+//   }
+//   console.log(errorMessage);
+// }
