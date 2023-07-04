@@ -1,0 +1,88 @@
+GET http://localhost:3002/bmi?height=180&weight=75
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+    "target": 2.5
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "target": 2.5
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "target": "ukkis"
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5]
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": "ukkis"
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+    "target": 2.5,
+    "ukkis": "ukkis"
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+    "ukkis": "ukkis"
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": [1, 0, 2, 0, 3, 25, 2.5],
+    "target": 7
+}
+
+###
+
+POST http://localhost:3002/exercises
+Content-Type: application/json
+
+{
+    "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+    "target": -5
+}

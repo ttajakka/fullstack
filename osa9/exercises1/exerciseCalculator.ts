@@ -1,6 +1,6 @@
 import parseArguments from "./parseArguments";
 
-interface ExerciseData {
+export interface ExerciseData {
   target: number;
   dailyExercises: number[];
 }
@@ -15,7 +15,7 @@ interface Result {
   average: number;
 }
 
-const getExerciseData = (): ExerciseData => {
+export const getExerciseData = (): ExerciseData => {
   const args = parseArguments();
   if (!args || args.length < 2)
     throw new Error("Must provide at least two arguments");
@@ -35,7 +35,7 @@ const getExerciseData = (): ExerciseData => {
   };
 };
 
-const calculateExercises = (data: ExerciseData): Result => {
+export const calculateExercises = (data: ExerciseData): Result => {
   const { target, dailyExercises } = data;
 
   const periodLength = dailyExercises.length;
@@ -64,14 +64,14 @@ const calculateExercises = (data: ExerciseData): Result => {
   };
 };
 
-try {
-  console.log(calculateExercises(getExerciseData()));
-} catch (error: unknown) {
-  let errorMessage = "Something went wrong.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
-  }
-  console.log(errorMessage);
-}
+// try {
+//   console.log(calculateExercises(getExerciseData()));
+// } catch (error: unknown) {
+//   let errorMessage = "Something went wrong.";
+//   if (error instanceof Error) {
+//     errorMessage += " Error: " + error.message;
+//   }
+//   console.log(errorMessage);
+// }
 
 // console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1]));
