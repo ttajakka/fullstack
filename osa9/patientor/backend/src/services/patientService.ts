@@ -10,9 +10,6 @@ const getPatientsNoSSN = (): PatientNoSSN[] => {
 };
 
 const addPatient = ( newPatientData: NewPatient): Patient => {
-
-    // const id = uuid().toString();
-    // const id = uuid();
     const newPatient = {
         id: uuid(),
         ...newPatientData

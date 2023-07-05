@@ -1,0 +1,41 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "ukkis", 
+    "dateOfBirth": "1930-07-21",
+    "ssn": "10958-jffw4t",
+    "gender": "male",
+    "occupation": "bishop"
+}
+
+###
+
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "ukkis", 
+    "dateOfBirth": "ASDFASDF",
+    "ssn": "10958-jffw4t",
+    "gender": "male",
+    "occupation": "bishop"
+}
+
+###
+
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "ukkis", 
+    "dateOfBirth": "1930-07-21",
+    "ssn": "10958-jffw4t",
+    "gender": "male"
+}
+
+###
+
+###
+
+GET http://localhost:3001/api/patients
