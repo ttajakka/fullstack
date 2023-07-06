@@ -1,0 +1,17 @@
+GET http://localhost:3000/api/diaries
+
+###
+
+GET http://localhost:3000/api/diaries/2
+
+###
+
+POST http://localhost:3000/api/diaries
+Content-Type: application/json
+
+{
+    "date": "2023-01-27",
+    "weather": "rainy",
+    "visibility": "stupid",
+    "comment": "happy birthday isi"
+}
