@@ -7,22 +7,54 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 
 
 import patientService from "../../services/patients";
-import { Entry, Patient } from "../../types";
+import diagnosisService from "../../services/diagnoses"
+import { Entry, Patient, Diagnosis } from "../../types";
 
-const EntryDiv = (data: Entry) => {
+interface EntryProps {
+    entry: Entry;
+    diagnoses: Diagnosis[];
+}
+
+const EntryDiv = (props: EntryProps) => {
+    const entry = props.entry
+    const diags = props.diagnoses;
+
+    const diagCodesAndNames: string[][] = []
+    if (entry.diagnosisCodes) {
+        entry.diagnosisCodes.forEach(d => {
+            const di = diags.find(di => di.code === d);
+            if (di) {
+                diagCodesAndNames.push([d, di.name])
+            }
+        })
+    }
+    
     return (<div>
-        <div>{data.date} <em>{data.description}</em></div>
-        {data.diagnosisCodes ?
+        <div>{entry.date} <em>{entry.description}</em></div>
+        {entry.diagnosisCodes ?
             <ul>
-                {data.diagnosisCodes.map(d => <li key={d}>{d}</li>)}
+                {diagCodesAndNames
+                  .map(d => 
+                    <li key={d[0]}>
+                        {d[0]} {d[1]} 
+                    </li>)}
             </ul> : null}
     </div>);
 };
 
 
 const PatientPage = () => {
+    const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
     const [patient, setPatient] = useState<Patient | null>(null);
     const id = useParams().id;
+
+    useEffect(() => {
+        const fetchDiagnosisList = async () => {
+            const diagnoses = await diagnosisService.getAll();
+            setDiagnoses(diagnoses);
+        };
+        void fetchDiagnosisList();
+    }, []);
 
     useEffect(() => {
         const getPatient = async () => {
@@ -49,7 +81,7 @@ const PatientPage = () => {
             <div>ssn: {patient.ssn}</div>
             <div>occupation: {patient.occupation}</div>
             <h3>Entries</h3>
-            {patient.entries.map((e) => <EntryDiv key={e.id} {...e} />)}
+            {patient.entries.map((e) => <EntryDiv key={e.id} entry={e} diagnoses={diagnoses} />)}
         </div>
     );
 };
