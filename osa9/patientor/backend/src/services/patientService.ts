@@ -4,9 +4,13 @@ import patients from '../../data/patients';
 import { Patient, PatientNoSSN, NewPatient } from '../types';
 
 const getPatientsNoSSN = (): PatientNoSSN[] => {
-    return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-        id, name, dateOfBirth, gender, occupation
+    return patients.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+        id, name, dateOfBirth, gender, occupation, entries
     }));
+};
+
+const getPatientWithID = (id: string): Patient | undefined => {
+    return patients.find(p => p.id === id);
 };
 
 const addPatient = ( newPatientData: NewPatient): Patient => {
@@ -19,4 +23,4 @@ const addPatient = ( newPatientData: NewPatient): Patient => {
     return newPatient;
 };
 
-export default { getPatientsNoSSN, addPatient };
+export default { getPatientsNoSSN, getPatientWithID, addPatient };
