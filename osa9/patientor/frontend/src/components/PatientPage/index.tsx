@@ -7,7 +7,7 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 
 
 import patientService from "../../services/patients";
-import diagnosisService from "../../services/diagnoses"
+import diagnosisService from "../../services/diagnoses";
 import { Entry, Patient, Diagnosis } from "../../types";
 
 interface EntryProps {
@@ -16,29 +16,23 @@ interface EntryProps {
 }
 
 const EntryDiv = (props: EntryProps) => {
-    const entry = props.entry
+    const entry = props.entry;
     const diags = props.diagnoses;
+    const codes = entry.diagnosisCodes;
 
-    const diagCodesAndNames: string[][] = []
-    if (entry.diagnosisCodes) {
-        entry.diagnosisCodes.forEach(d => {
-            const di = diags.find(di => di.code === d);
-            if (di) {
-                diagCodesAndNames.push([d, di.name])
-            }
-        })
+    if (codes) {
+        const filteredDiags = diags.filter(d => codes.includes(d.code));
+        return (<div>
+            <div>{entry.date} <em>{entry.description}</em></div>
+            {<ul>
+                {filteredDiags.map(d =>
+                    <li key={d.code}>{d.code} {d.name}</li>)}
+            </ul>}
+        </div>);
     }
-    
+
     return (<div>
         <div>{entry.date} <em>{entry.description}</em></div>
-        {entry.diagnosisCodes ?
-            <ul>
-                {diagCodesAndNames
-                  .map(d => 
-                    <li key={d[0]}>
-                        {d[0]} {d[1]} 
-                    </li>)}
-            </ul> : null}
     </div>);
 };
 
