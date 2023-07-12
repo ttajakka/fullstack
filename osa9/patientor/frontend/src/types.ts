@@ -22,13 +22,18 @@ export interface Patient {
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
+export type EntryType = "HealthCheck" | "Hospital" | "OccupationalHealthcare";
+
 interface BaseEntry {
   id: string;
+  type: EntryType;
   description: string;
   date: string;
   specialist: string;
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
+
+export type NewBaseEntry = Omit<BaseEntry, 'id'>;
 
 export enum HealthCheckRating {
   "Healthy" = 0,
@@ -67,3 +72,8 @@ export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// Define Entry without the 'id' property
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;

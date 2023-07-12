@@ -36,6 +36,60 @@ Content-Type: application/json
 
 ###
 
-###
 
 GET http://localhost:3001/api/patients
+
+
+###
+
+POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "type": "HealthCheck",
+    "description": "Patient is sick",
+    "date": "2000-01-01",
+    "specialist": "Hyartt",
+    "healthCheckRating": 0
+}
+
+###
+
+POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "type": "OccupationalHealthcare",
+    "description": "Patient is sick",
+    "date": "2000-01-01",
+    "specialist": "Hyartt",
+    "employerName": "Eduskunta",
+    "sickLeave": { "startDate": "2000-01-01", "endDate": "2000-02-02"}
+}
+
+###
+
+POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "type": "Hospital",
+    "description": "Patient is sick",
+    "date": "2000-01-01",
+    "specialist": "Hyartt",
+    "discharge": { "date": "2000-01-01", "criteria": "patient recovered"} 
+}
+
+###
+
+POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "type": "Hospital",
+    "description": "Patient is sick",
+    "date": "2000-01-01",
+    "specialist": "Hyartt",
+    "discharge": { "date": "2000-01-01", "criteria": "patient recovered"},
+    "diagnosisCodes": [ "M24.2", "M51.2"]
+}
