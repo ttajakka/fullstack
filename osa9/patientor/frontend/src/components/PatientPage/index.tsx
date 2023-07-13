@@ -5,7 +5,7 @@ import axios from "axios";
 
 import {
   Card, InputLabel, Input, Button, Alert,
-  Select, MenuItem
+  Select, MenuItem, ListItemText, OutlinedInput
 } from "@mui/material";
 
 import MaleIcon from "@mui/icons-material/Male";
@@ -37,9 +37,10 @@ interface EntryFormProps {
   patientID: Patient["id"],
   entries: Entry[],
   setEntries: React.Dispatch<React.SetStateAction<Entry[]>>;
+  diags: Diagnosis[];
 }
 
-const EntryForm = ({ patientID, entries, setEntries }:
+const EntryForm = ({ patientID, entries, setEntries, diags }:
   EntryFormProps) => {
   const [formOpen, setFormOpen] = useState(false);
   const [error, setError] = useState<String>();
@@ -47,7 +48,7 @@ const EntryForm = ({ patientID, entries, setEntries }:
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [specialist, setSpecialist] = useState('');
-  const [codes, setCodes] = useState('');
+  const [diagnosisCodes, setCodes] = useState<Diagnosis["code"][]>([]);
 
   const [healthCheckRating, setRating] = useState(0);
 
@@ -75,7 +76,7 @@ const EntryForm = ({ patientID, entries, setEntries }:
     setDate('');
     setSpecialist('');
     setRating(0);
-    setCodes('');
+    setCodes([]);
     setDischargeDate('');
     setDischargeCriteria('');
     setEmployerName('');
@@ -85,13 +86,14 @@ const EntryForm = ({ patientID, entries, setEntries }:
 
   const addEntry = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const diagnosisCodes = codes.split(', ');
+    // const diagnosisCodes = codes.split(', ');
 
     const baseValues: NewBaseEntry = {
       type,
       description,
       date,
       specialist,
+      // diagnosisCodes
       diagnosisCodes
     };
 
@@ -116,7 +118,7 @@ const EntryForm = ({ patientID, entries, setEntries }:
             ...baseValues,
             type: "OccupationalHealthcare",
             employerName,
-            sickLeave: {startDate: sickLeaveStartDate, endDate: sickLeaveEndDate}
+            sickLeave: { startDate: sickLeaveStartDate, endDate: sickLeaveEndDate }
           };
       }
     };
@@ -150,10 +152,10 @@ const EntryForm = ({ patientID, entries, setEntries }:
     <form onSubmit={addEntry}>
       {error && <Alert severity="error">{error}</Alert>}
 
-      <InputLabel id="demo-simple-select-label">Entry type</InputLabel>
+      <InputLabel id="entry-select-label">Entry type</InputLabel>
       <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
+        labelId="entry-select-label"
+        id="entry-select"
         value={type}
         label="Type"
         onChange={({ target }) => setType(target.value as EntryType)}
@@ -172,6 +174,7 @@ const EntryForm = ({ patientID, entries, setEntries }:
 
       <InputLabel htmlFor="date">Date</InputLabel>
       <Input id="date"
+        type="date"
         fullWidth
         value={date}
         onChange={({ target }) => setDate(target.value)}
@@ -181,20 +184,49 @@ const EntryForm = ({ patientID, entries, setEntries }:
       <Input id="specialist"
         fullWidth
         value={specialist}
-        onChange={({ target }) => setSpecialist(target.value)} />
+        onChange={({ target }) => setSpecialist(target.value)}
+      />
+
+      <InputLabel id="diagnosis-codes-label">Diagnosis codes</InputLabel>
+      <Select
+        labelId="diagnosis-codes-label"
+        id="diagnosis-codes-select"
+        fullWidth
+        multiple
+        value={diagnosisCodes}
+        onChange={({ target }) => setCodes(typeof target.value === 'string' 
+        ? target.value.split(',') : target.value)}
+        input={<OutlinedInput label="Tag" />}
+        renderValue={(selected) => selected.join(', ')}
+      >
+      {diags.map((d) => (
+        <MenuItem key={d.code} value={d.code}>
+          <ListItemText primary={d.code} secondary={d.name} />
+        </MenuItem>
+      ))}
+      </Select>
 
       {type === "HealthCheck" && <div>
-        <InputLabel htmlFor="healthcheckrating">Healthcheck rating</InputLabel>
-        <Input id="healthcheckrating"
-          fullWidth
+        <InputLabel id="hcr-select-label">Healthcheck rating</InputLabel>
+        <Select
+          labelId="hcr-select-label"
+          id="hcr-select"
           value={healthCheckRating}
-          onChange={({ target }) => setRating(Number(target.value))} />
+          label="Type"
+          onChange={({ target }) => setRating(Number(target.value))}
+        >
+          <MenuItem value={0}>0 - Healthy</MenuItem>
+          <MenuItem value={1}>1 - Low risk</MenuItem>
+          <MenuItem value={2}>2 - High risk</MenuItem>
+          <MenuItem value={3}>3 - Critical risk</MenuItem>
+        </Select>
       </div>}
 
       {type === "Hospital" && <div>
         <InputLabel htmlFor="dischargedate">Discharge date</InputLabel>
         <Input id="dischargedate"
           fullWidth
+          type="date"
           value={dischargeDate}
           onChange={({ target }) => setDischargeDate(target.value)} />
 
@@ -215,21 +247,24 @@ const EntryForm = ({ patientID, entries, setEntries }:
         <InputLabel htmlFor="sickleavestartdate">Sick leave start date</InputLabel>
         <Input id="sickleavestartdate"
           fullWidth
+          type="date"
           value={sickLeaveStartDate}
           onChange={({ target }) => setSickLeaveStartDate(target.value)} />
 
         <InputLabel htmlFor="sickleaveenddate">Sick leave end date</InputLabel>
         <Input id="sickleaveenddate"
           fullWidth
+          type="date"
           value={sickLeaveEndDate}
           onChange={({ target }) => setSickLeaveEndDate(target.value)} />
       </div>}
 
-      <InputLabel htmlFor="diagnosiscodes">Diagnosis codes</InputLabel>
+      {/* <InputLabel htmlFor="diagnosiscodes">Diagnosis codes</InputLabel>
       <Input id="diagnosiscodes"
         fullWidth
         value={codes}
-        onChange={({ target }) => setCodes(target.value)} />
+        onChange={({ target }) => setCodes(target.value)} /> */}
+      
       <div>
         <Button onClick={closeForm}>Cancel</Button>
         <Button style={{ float: "right" }} type="submit">Add</Button>
@@ -362,7 +397,12 @@ const PatientPage = ({ diagnoses }: { diagnoses: Diagnosis[]; }) => {
   return (
     <div>
       <PatientDetails patient={patient} />
-      <EntryForm patientID={patient.id} entries={entries} setEntries={setEntries} />
+      <EntryForm
+        patientID={patient.id}
+        entries={entries}
+        setEntries={setEntries}
+        diags={diagnoses}
+      />
       <Entries entries={entries} diags={diagnoses} />
     </div>
   );
