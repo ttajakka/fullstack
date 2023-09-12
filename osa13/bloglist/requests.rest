@@ -6,3 +6,7 @@ Content-Type: application/json
   "url": "https://martinfowler.com/articles/is-quality-worth-cost.html",
   "title": "Is High Quality Software Worth the Cost?"
 }
+
+### 
+
+DELETE http://localhost:3001/api/blogs/5
