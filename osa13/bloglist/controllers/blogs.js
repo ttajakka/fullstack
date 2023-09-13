@@ -16,7 +16,6 @@ router.post('/', async (req, res, next) => {
     const blog = await Blog.create(req.body)
     return res.json(blog)
   } catch (error) {
-    // return res.status(400).json({ error })
     next(error)
   }
 })
@@ -56,17 +55,5 @@ router.put('/:id', blogFinder, async (req, res, next) => {
     next(error)
   }
 })
-
-const errorHandler = (error, req, res, next) => {
-  console.log(error)
-
-  if (error.name === 'SequelizeValidationError') {
-    res.status(400).send(error.message)
-  }
-
-  next(error)
-}
-
-router.use(errorHandler)
 
 module.exports = router

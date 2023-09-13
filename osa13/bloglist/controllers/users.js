@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
   res.json(users)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const { username, name, password } = req.body
 
@@ -19,11 +19,12 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(user)
   } catch (error) {
-    return res.status(400).json({ error })
+    // return res.status(400).json({ error })
+    next(error)
   }
 })
 
-router.put('/:username', async (req, res) => {
+router.put('/:username', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { username: req.params.username },
@@ -36,8 +37,9 @@ router.put('/:username', async (req, res) => {
       res.status(404).end()
     }
   } catch (error) {
-    console.log(error)
-    res.status(400).send({ error })
+    // console.log(error)
+    // res.status(400).send({ error })
+    next(error)
   }
 })
 

@@ -12,6 +12,18 @@ app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 
+const errorHandler = (error, req, res, next) => {
+  console.log(error)
+
+  if (error.name === 'SequelizeValidationError') {
+    res.status(400).send({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
+
 const start = async () => {
   await connectToDatabase()
   app.listen(PORT, () => {
