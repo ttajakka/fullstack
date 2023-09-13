@@ -19,3 +19,24 @@ Content-Type: application/json
 {
   "likes": 3
 }
+
+###
+
+# malformatted POST request
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "author": "Martin Fowler",
+  "title": "Is High Quality Software Worth the Cost?"
+}
+
+###
+
+# malformatted PUT request
+PUT http://localhost:3001/api/blogs/1
+Content-Type: application/json
+
+{
+  "url": "http://error.org"
+}
