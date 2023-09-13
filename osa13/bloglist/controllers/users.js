@@ -1,10 +1,15 @@
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
 
-const { User } = require('../models')
+const { User, Blog } = require('../models')
 
 router.get('/', async (req, res) => {
-  const users = await User.findAll()
+  const users = await User.findAll({
+    include: {
+      model: Blog,
+      attributes: { exclude: ['id', 'userId']}
+    }
+  })
   res.json(users)
 })
 
@@ -19,7 +24,6 @@ router.post('/', async (req, res, next) => {
 
     res.status(201).json(user)
   } catch (error) {
-    // return res.status(400).json({ error })
     next(error)
   }
 })
