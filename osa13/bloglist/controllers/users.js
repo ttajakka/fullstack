@@ -56,7 +56,7 @@ router.get('/:id', async (req, res, next) => {
           as: 'markedBlog',
           attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
           through: {
-            attributes: []
+            attributes: ['read', 'id']
           }
         }
       ]
