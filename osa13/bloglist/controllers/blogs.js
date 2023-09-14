@@ -4,6 +4,7 @@ const router = require('express').Router()
 
 const { Blog, User } = require('../models')
 const { SECRET } = require('../util/config')
+const { tokenExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -19,7 +20,7 @@ router.get('/', async (req, res, next) => {
     }
 
     const blogs = await Blog.findAll({
-      attributes: { exclude: ['userId'] },
+      attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
       include: {
         model: User,
         attributes: ['name', 'username'],
@@ -33,21 +34,21 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-const tokenExtractor = (req, res, next) => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    try {
-      console.log(authorization.substring(7))
-      req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
-    } catch (error) {
-      console.log(error)
-      return res.status(401).json({ error: 'token invalid' })
-    }
-  } else {
-    return res.status(401).json({ error: 'token missing' })
-  }
-  next()
-}
+// const tokenExtractor = (req, res, next) => {
+//   const authorization = req.get('authorization')
+//   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+//     try {
+//       console.log(authorization.substring(7))
+//       req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
+//     } catch (error) {
+//       console.log(error)
+//       return res.status(401).json({ error: 'token invalid' })
+//     }
+//   } else {
+//     return res.status(401).json({ error: 'token missing' })
+//   }
+//   next()
+// }
 
 router.post('/', tokenExtractor, async (req, res, next) => {
   try {
