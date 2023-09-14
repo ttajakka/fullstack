@@ -30,7 +30,7 @@ Reading.init(
   {
     sequelize,
     underscored: true,
-    modelName: 'blog',
+    modelName: 'reading',
   }
 )
 
