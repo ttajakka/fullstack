@@ -26,7 +26,7 @@ router.get('/', async (req, res, next) => {
         attributes: ['name', 'username'],
       },
       where,
-      order: [['likes', 'DESC']]
+      order: [['likes', 'DESC']],
     })
     res.json(blogs)
   } catch (error) {
@@ -83,13 +83,16 @@ router.delete('/:id', blogFinder, tokenExtractor, async (req, res, next) => {
 })
 
 router.put('/:id', blogFinder, async (req, res, next) => {
-  if (!req.body.likes) {
-    res.status(400).end()
-  }
+  // if (!req.body.likes) {
+  //   res.status(400).end()
+  // }
+
+  const { likes, year } = req.body
 
   try {
     if (req.blog) {
-      req.blog.likes = req.body.likes
+      if (likes) req.blog.likes = likes
+      if (year) req.blog.year = year
       await req.blog.save()
       res.json(req.blog)
     } else {
